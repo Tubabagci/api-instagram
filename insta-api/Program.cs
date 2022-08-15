@@ -29,12 +29,16 @@ namespace insta_api
 
         private static async Task<List<Repository>> ProcessRepositories()
         {
+            string VERSION = "v11.0";
+            string USER_ID = "17841454972667293";
+            string TOKEN_60 = "IGQVJWaC1abVd3R3ViYVVpdUhZAUVF5aUx2T19iR00tQmxtcmdRM3Y2QVBFczktcURLWm8wRUZAWQXN5V3dVNVEwbE0xdlRjYTBXMmRzTnYwOWZAkemhKYVhyT1RmUmZAnTjRkUkFZAel93";
+
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            var streamTask = client.GetStreamAsync("https://api.github.com/orgs/dotnet/repos");
+            var streamTask = client.GetStreamAsync("https://graph.instagram.com/+"+VERSION+"/"+USER_ID+"/media?access_token="+TOKEN_60+"&fields=permalink");
             var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
             return repositories;
         }
