@@ -12,7 +12,8 @@ namespace insta_api
     class Program
     {
 
-        
+
+        private static readonly HttpClient client = new HttpClient();
 
 
 
@@ -83,19 +84,23 @@ namespace insta_api
             string VERSION = "v11.0";
             string USER_ID = "17841454972667293";
             string TOKEN_60 = "ÖÇŞ-IGQVJYdm9TOXMwc2ViZAVgxbzRHa2FrYmdKYnJiUG9TcGg2a3Ywb3BiWFhTNTR0ZA3lXdW54WHBEZAjU3MlE4WmkyTXlIbl9EeHNtUnZAEOTdfa2ZAmdDBzaU03NjdSTEl3RWd0eW5Jblhn";
-            string url = "https://graph.instagram.com/+" + VERSION + "/" + USER_ID + "/media?access_token=" + TOKEN_60 + "&fields=permalink";
+            string url = "https://graph.instagram.com/" + VERSION + "/" + USER_ID + "/media?access_token=" + TOKEN_60 + "&fields=permalink";
+
+            string url2= "https://api.github.com/orgs/dotnet/repos";
 
 
+            var repositories2 = await ProcessRepositories(url);
 
 
-            var repositories = await ProcessRepositories(url);
-
-            foreach (var repo in repositories.data)
+            foreach (var repo in repositories2.data)
             {
+
+                Console.WriteLine("-----------------");
                 Console.WriteLine(repo.permalink);
-               
+           
                 Console.WriteLine();
             }
+
 
 
         }
@@ -105,8 +110,10 @@ namespace insta_api
         private static async Task<instaModel> ProcessRepositories(string url)
         {
 
-
-            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+             new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
             var streamTask = client.GetStreamAsync(url);
 
@@ -115,6 +122,19 @@ namespace insta_api
             return repositories;
         }
 
+
+
+        private static async Task<List<Repository>> ProcessRepositories2(string url2)
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+            var streamTask = client.GetStreamAsync(url2);
+            var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+            return repositories;
+        }
 
 
 

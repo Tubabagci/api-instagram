@@ -5,29 +5,31 @@ using System.Collections.Generic;
 
 namespace insta_api
 {
-    public class Repository
-    {
-
-        public class fields
+  
+        public class Repository
         {
-            public string permalink { get; set; }
-            public string id { get; set; }
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
+
+            [JsonPropertyName("description")]
+            public string Description { get; set; }
+
+            [JsonPropertyName("html_url")]
+            public Uri GitHubHomeUrl { get; set; }
+
+            [JsonPropertyName("homepage")]
+            public Uri Homepage { get; set; }
+
+            [JsonPropertyName("watchers")]
+            public int Watchers { get; set; }
+
+            [JsonPropertyName("pushed_at")]
+            public string JsonDate { get; set; }
+
+            public DateTime LastPush =>
+                DateTime.ParseExact(JsonDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
         }
 
-
-        public class Cursors
-        {
-            public string before { get; set; }
-            public string after { get; set; }
-        }
-
-        [JsonPropertyName("data")]
-        public fields[] data { get; set; }
-
-        [JsonPropertyName("paging")]
-        public Dictionary<string, Cursors>? paging { get; set; }
-
-
-    }
+    
 
 }
