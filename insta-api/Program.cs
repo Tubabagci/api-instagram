@@ -7,40 +7,118 @@ using System.Threading.Tasks;
 
 namespace insta_api
 {
+
+    
     class Program
     {
-        private static readonly HttpClient client = new HttpClient();
 
-        static async Task Main(string[] args)
+        
+
+
+
+        public class instaModel
+                {
+            
+                            public Dictionary<string, cursors>? paging { get; set; }
+                            public fields[] data { get; set; }
+                        }
+
+                        public class fields
+                        {
+                            public string permalink { get; set; }
+                            public string id { get; set; }
+                        }
+
+
+                        public class cursors
+                        {
+                            public string before { get; set; }
+                            public string after { get; set; }
+                        }
+
+        public static async Task Main()
         {
-            var repositories = await ProcessRepositories();
 
-            foreach (var repo in repositories)
+
+                            string jsonString =
+                                            @"{
+  
+                                            ""data"": [
+                                                    {
+                                                            ""permalink"": ""https://www.instagram.com/p/ChR_0BLMLLZ/"",
+                                                             ""id"": ""17973110518679928""
+                                                    },
+                                                    {
+                                                            ""permalink"": ""https://www.instagram.com/p/ChR3lWssd-k/"",
+                                                             ""id"": ""17942418470216798""
+                                                    }
+                                                ],
+                                                ""paging"": {
+                                                            ""cursors"": {
+                                                                ""before"": ""QVFIUmZAkaHE0T0J1NmJNbk5ZANW92MmFRUEd0cGN5WW4yMXFTSDJZAWDB0TkRTMlIyZAEpaMWE4aGQyNFdyaE9nODd3ZAlhZANDhDeld1SE4tdnFXbGNEN21KaGdB"",
+                                                        ""after"": ""QVFIUmtlV0FQUm50ZAVVuUzVLQXEzMTR2MURPM0xpNGVMaEdDMllvbmFka2tvUFoyY2Q5YjFXdHZADc0YyUzFLZAzJJVno2bHh6ekhvT0xpaDIwc1lhaF9kTzl3""
+                                                            }
+                                                        }
+
+                                                    }
+                                            ";
+
+            instaModel? instaModel1 = JsonSerializer.Deserialize<instaModel>(jsonString);
+
+            foreach (var item in instaModel1?.data)
             {
-                Console.WriteLine(repo.Name);
-                Console.WriteLine(repo.Description);
-                Console.WriteLine(repo.GitHubHomeUrl);
-                Console.WriteLine(repo.Homepage);
-                Console.WriteLine(repo.Watchers);
-                Console.WriteLine(repo.LastPush);
-                Console.WriteLine();
+                Console.WriteLine($"Date: {item.permalink}");
             }
-        }
 
-        private static async Task<List<Repository>> ProcessRepositories()
-        {
+
+            /* foreach (KeyValuePair<string, cursors> kvp in instaModel?.paging)
+             {
+                 Console.WriteLine(" before degeri = {0}, \n  after degeri = {1}", kvp.Value.before, kvp.Value.after);
+             }*/
+
+
+
+            
+
             string VERSION = "v11.0";
             string USER_ID = "17841454972667293";
-            string TOKEN_60 = "IGQVJWaC1abVd3R3ViYVVpdUhZAUVF5aUx2T19iR00tQmxtcmdRM3Y2QVBFczktcURLWm8wRUZAWQXN5V3dVNVEwbE0xdlRjYTBXMmRzTnYwOWZAkemhKYVhyT1RmUmZAnTjRkUkFZAel93";
+            string TOKEN_60 = "ÖÇŞ-IGQVJYdm9TOXMwc2ViZAVgxbzRHa2FrYmdKYnJiUG9TcGg2a3Ywb3BiWFhTNTR0ZA3lXdW54WHBEZAjU3MlE4WmkyTXlIbl9EeHNtUnZAEOTdfa2ZAmdDBzaU03NjdSTEl3RWd0eW5Jblhn";
+            string url = "https://graph.instagram.com/+" + VERSION + "/" + USER_ID + "/media?access_token=" + TOKEN_60 + "&fields=permalink";
 
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            var streamTask = client.GetStreamAsync("https://graph.instagram.com/+"+VERSION+"/"+USER_ID+"/media?access_token="+TOKEN_60+"&fields=permalink");
-            var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+
+
+            var repositories = await ProcessRepositories(url);
+
+            foreach (var repo in repositories.data)
+            {
+                Console.WriteLine(repo.permalink);
+               
+                Console.WriteLine();
+            }
+
+
+        }
+
+
+
+        private static async Task<instaModel> ProcessRepositories(string url)
+        {
+
+
+            HttpClient client = new HttpClient();
+
+            var streamTask = client.GetStreamAsync(url);
+
+            var repositories = await JsonSerializer.DeserializeAsync<instaModel>(await streamTask);
+
             return repositories;
         }
+
+
+
+
     }
+
 }
+    
