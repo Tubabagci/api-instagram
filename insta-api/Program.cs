@@ -28,8 +28,8 @@ namespace insta_api
         {
 
             string VERSION = "v11.0";
-            string USER_ID = "17841454972667293";
-            string TOKEN_60 = "IGQVJYdm9TOXMwc2ViZAVgxbzRHa2FrYmdKYnJiUG9TcGg2a3Ywb3BiWFhTNTR0ZA3lXdW54WHBEZAjU3MlE4WmkyTXlIbl9EeHNtUnZAEOTdfa2ZAmdDBzaU03NjdSTEl3RWd0eW5Jblhn";
+            string USER_ID = "***17841454972667293";
+            string TOKEN_60 = "***IGQVJYdm9TOXMwc2ViZAVgxbzRHa2FrYmdKYnJiUG9TcGg2a3Ywb3BiWFhTNTR0ZA3lXdW54WHBEZAjU3MlE4WmkyTXlIbl9EeHNtUnZAEOTdfa2ZAmdDBzaU03NjdSTEl3RWd0eW5Jblhn";
             string url = "https://graph.instagram.com/" + VERSION + "/" + USER_ID + "/media?access_token=" + TOKEN_60 + "&fields=permalink";
 
 
