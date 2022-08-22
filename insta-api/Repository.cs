@@ -5,31 +5,31 @@ using System.Collections.Generic;
 
 namespace insta_api
 {
-  
-        public class Repository
-        {
-            [JsonPropertyName("name")]
-            public string Name { get; set; }
 
-            [JsonPropertyName("description")]
-            public string Description { get; set; }
+    public class Repository
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-            [JsonPropertyName("html_url")]
-            public Uri GitHubHomeUrl { get; set; }
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
-            [JsonPropertyName("homepage")]
-            public Uri Homepage { get; set; }
+        [JsonPropertyName("html_url")]
+        public Uri GitHubHomeUrl { get; set; }
 
-            [JsonPropertyName("watchers")]
-            public int Watchers { get; set; }
+        [JsonPropertyName("homepage")]
+        public Uri Homepage { get; set; }
 
-            [JsonPropertyName("pushed_at")]
-            public string JsonDate { get; set; }
+        [JsonPropertyName("watchers")]
+        public int Watchers { get; set; }
 
-            public DateTime LastPush =>
-                DateTime.ParseExact(JsonDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
-        }
+        [JsonPropertyName("pushed_at")]
+        public string JsonDate { get; set; }
 
-    
+        public DateTime LastPush =>
+            DateTime.ParseExact(JsonDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+    }
+
+
 
 }
